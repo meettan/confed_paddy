@@ -1,0 +1,62 @@
+18/08/2020
+
+Confed->application->modules->sw->view->bill->newPayment.php
+Confed->application->modules->sw->view->bill->editPayment.php
+
+Confed->application->modules->sw->Controllers->Sw.php
+Confed->application->modules->sw->Model->SociaIW.php
+
+
+
+Changes on Table td_sw_payment add two filed  
+
+       dist       int(6)
+       hsn_no     int(8)
+
+Worked on 17/09/2020
+
+Confed->application->modules->paddys->Controllers->paddys.php
+
+Confed->application->modules->paddys->view->payment/add.php
+
+Confed->application->modules->paddys->view->reports/payment.php
+
+Confed->application->modules->paddys->view->reports/payment.php
+
+Confed->application->modules->paddys->models->Paddy.php
+
+
+Worked on 17/09/2020
+
+add a page on Confed->application->modules->paddys->view->reports/payment_society.php
+
+Confed->application->modules->paddys->Controllers->paddys.php
+
+Confed->application->modules->paddys->models->Paddy.php
+
+Confed->application->view->post_login->main.php
+
+Worked on 22/09/2020
+
+add a page on Confed->application->modules->paddys->view->reports/payment_voucher.php
+
+Confed->application->modules->paddys->Controllers->paddys.php
+
+Confed->application->view->post_login->main.php
+
+Worked on 23/09/2020
+
+add a page on Confed->application->modules->paddys->view->reports/payment_voucher.php
+
+Confed->application->modules->paddys->Controllers->paddys.php
+
+Worked on 24/09/2020
+
+add a page on Confed->application->modules->paddys->view->payment/add.php
+
+
+
+
+
+
+
