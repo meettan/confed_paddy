@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Login Page--->
 <html lang="en">
 <head>
 	<title>Confed-Login</title>
@@ -52,9 +53,9 @@
 						</p>
 					</span>
 					<hr>
-					<!-- <span class="login100-form-title p-b-10" >
-						Account Login
-					</span> -->
+					<span class="login100-form-title p-b-10" >
+						KMS Year : 2020-21
+					</span>
 					
 					<span class="txt1 p-b-11">
 						Username
@@ -74,42 +75,7 @@
 						<input class="input100" type="password" name="user_pwd" />
 						<span class="focus-input100"></span>
 					</div>
-					<span class="txt1 p-b-11">
-						Module
-					</span>
-					<div class="wrap-input100">
-                <select  class="module_type"  style="width:390px;height:40px;" id="module_type"  name="module_type">
-                              <option value="Others">Others</option>
-                              <option value="Paddy">Paddy</option>
-                </select>
-				</div>
-					<span class="txt1 p-b-11" id="kms_txt">
-						KMS YEAR
-					</span>
-					<div class="wrap-input100">
-                <!-- <select  class="input100"  id="module_type"  name="module_type">
-                              <option value="Others">Others</option>
-                              <option value="Paddy">Paddy</option>
-                </select> -->
-				<select class="kms_yr" style="width:390px;height:40px;" name="kms_yr" id="kms_yr">
-
-								<option value ="">Please Select KMS Year</option>
-
-								<?php
-
-									foreach($kms_yr as $row){ ?>
-
-										<option value="<?php echo $row->kms_yr ?>"><?php echo $row->kms_yr; ?></option>
-									<?php
-										}
-									?>
-
-							</select>
-
-
-              </div>
-			  
-			  
+					
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn">
 							Login
@@ -140,7 +106,8 @@
 	<script src="<?php echo base_url("/assets/login/vendor/countdowntime/countdowntime.js")?>"></script>
 <!--===============================================================================================-->
 	<script src="<?php echo base_url("/assets/login/js/main.js")?>"></script>
-	<script>
+	
+	<!--<script>
 		$(document).ready(function(){
 			$("#login").on('submit',function(){
 
@@ -156,9 +123,9 @@
 			});
 		});
 
-	</script>
+	</script>-->
 
-<script>
+<!--<script>
 $(document).ready(function () {
    
     $('#kms_yr').hide();
@@ -180,7 +147,7 @@ $(document).ready(function () {
 				
     })
 });
-</script>
+</script>-->
 </body>
 </html>
 

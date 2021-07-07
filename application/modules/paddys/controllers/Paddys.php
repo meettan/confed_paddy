@@ -401,7 +401,7 @@ class Paddys extends MX_Controller {
 
         $this->load->view("society/dashboard", $society);
 
-        $this->load->view('search/search');
+        //$this->load->view('search/search');
 
         $this->load->view('post_login/footer');
         
@@ -683,7 +683,7 @@ class Paddys extends MX_Controller {
 
         $this->load->view("mill/dashboard", $mill);
 
-        $this->load->view('search/search');
+        //$this->load->view('search/search');
 
         $this->load->view('post_login/footer');
         
@@ -884,6 +884,8 @@ class Paddys extends MX_Controller {
         echo json_encode($data);
 
     }
+
+    /**********************************Society Mill Connection ************************************/
 
 
     /*********************For Workorder Screen********************/

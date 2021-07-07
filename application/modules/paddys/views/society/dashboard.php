@@ -1,3 +1,8 @@
+<link rel = "stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script src= "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" ></script>
+<script src= "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" ></script>
+<link rel = "stylesheet" href= "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+
 <div class="wraper">      
         
         <div class="row">
@@ -15,13 +20,13 @@
             <h3>
                 <a href="<?php echo site_url("paddy/society/add");?>" class="btn btn-primary" style="width: 100px;">Add</a>
                 <span class="confirm-div" style="float:right; color:green;"></span>
-                <div class="input-group" style="margin-left:75%;">
+                <!--<div class="input-group" style="margin-left:75%;">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input type="text" class="form-control" placeholder="Search..." id="search" style="z-index: 0;">
-                </div>
+                </div>-->
             </h3>
 
-            <table class="table table-bordered table-hover">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 
                 <thead>
 
@@ -32,7 +37,8 @@
                         <th>Registration<br>No.</th>
                         <th>Phone No.</th>
                         <th>Distrist</th>
-                        <th>Option</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
 
                     </tr>
 
@@ -72,7 +78,9 @@
                                         
                                     </a>
 
-                                
+                                </td>
+
+                                <td>
 
                                     <button 
                                         type="button"
@@ -120,7 +128,8 @@
                         <th>Registration<br>No.</th>
                         <th>Phone No.</th>
                         <th>Distrist</th>
-                        <th>Option</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
 
                     </tr>
                 
@@ -169,4 +178,10 @@
     });
 
     
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable();
+    });
 </script>

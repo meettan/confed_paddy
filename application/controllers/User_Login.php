@@ -1,78 +1,72 @@
 <?php
 
+	/*************************************************************************************
+	 * Controler used for login page ,setting session variables,redirect to dashboard	 *
+	 * on successfull login & eventually logout										     *	
+	 *************************************************************************************/
+
 	class User_Login extends MX_Controller{
 
 		public function __construct(){
 			parent::__construct();
 			$this->load->model('Login_Process');
 		}
-		
+
 		public function index(){
 
 			if($_SERVER['REQUEST_METHOD']=="POST"){
+
 				$user_id = $_POST['user_id'];
+
 				$user_pw = $_POST['user_pwd'];
-				$module_type = $_POST['module_type'];
-				$kms_yr  = $_POST['kms_yr'];
+
+				$kms_yr  = '2020-21';
 			
-				$result  = $this->Login_Process->f_select_password($user_id);
-				$match	 = password_verify($user_pw,$result->password);
-				if($match){
-					$user_data = $this->Login_Process->f_get_user_inf($user_id);
-					$this->session->set_userdata('loggedin',$user_data);
-					$this->Login_Process->f_insert_audit_trail($user_id);
-					$this->session->set_userdata('sl_no',$this->Login_Process->f_audit_trail_value($user_id));
+				$result  = $this->Login_Process->f_select_password($user_id);		//fetching db pwd
 
-              
-					$this->session->set_userdata('kms_yr',$kms_yr);
-					$kms_data 	 = $this->Login_Process->f_get_kms_inf($kms_yr);
-					// $loggedin['kms_id']  			= $kms_data->sl_no;
-					// $loggedin['kms_yr']   			= $kms_data->kms_yr;
-					
-				    if( $module_type!='Paddy'){
+				$match	 = password_verify($user_pw,$result->password);			   //matching db pwd & pwd supplied by user
+
+				if($match){														  //if pwd matches
+
+					$user_data = $this->Login_Process->f_get_user_inf($user_id);  //Store user information		
+
+					$this->session->set_userdata('loggedin',$user_data);		 //Set session variable as logged in
+
+					$this->session->set_userdata('kms_yr',$kms_yr);				//Set KMS_yr in session variable
+
+					$kms_data 	 = $this->Login_Process->f_get_kms_inf($kms_yr); //Retrieve kms_yr information for the particular kms_yr
+
+					redirect('User_Login/main');								//redirect to dashboard
 				
-				$this->session->set_userdata('kms_yr',"");
-				   }
-					if($this->session->userdata('loggedin')->ddmo == 1){
-						redirect('Disaster/Report/confirmationddmo');
-					}
-					else{
-
-						redirect('User_Login/main');
-					}
-				}else{
+				}else{														//if pwd doesnot match redirect to login page
 					redirect('User_Login/login');
 				}
-			}else{
+
+			}else{															//if not post request redirect to login page
 				redirect('User_Login/login');
 			}
 			
 		}
 
 
-		public function login(){
+		public function login(){					//if session variable is logged in then redirect to dashboard else redirect to login page
 
-			if($this->session->userdata('loggedin')){
+			if($this->session->userdata('loggedin')){					
 
 				redirect('User_Login/main');
 
 			}else{
-			   $data["kms_yr"]		 = $this->Login_Process->f_get_kms_yr();
 			  
-				$this->load->view('login/login',$data);
+				$this->load->view('login/login');
 
 			}
 		}
 
-		public function main(){
+		public function main(){							//If user successfully logged in re-direct to dashboard else to login page
 
 			if($this->session->userdata('loggedin')){
 
-				//$this->session->set_userdata('sysdate',$this->Login_Process->f_get_parameters(4));
 				$_SESSION['sys_date']= date('Y-m-d');
-
-				$this->session->set_userdata('cashcode', $this->Login_Process->f_get_parameters(13));
-				$_SESSION['cash_code']=$this->session->userdata('cashcode')->param_value;
 
 				$this->load->view('post_login/main');
 				$this->load->view('post_login/home');
@@ -81,19 +75,17 @@
 			}
 			else{
 
-				redirect('User_Login/login');
+				redirect('User_Login/login'); 
 
 			}
 			
 		}	
 
-		public function logout(){
+		public function logout(){					//After user logsout end session & redirect to login page
 
 			if($this->session->userdata('loggedin')){
 
 				$user_id    =   $this->session->userdata('loggedin')->user_id;
-				
-				$this->Login_Process->f_update_audit_trail($user_id);
 
 				$this->session->unset_userdata('loggedin');
 

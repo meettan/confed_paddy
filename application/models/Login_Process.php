@@ -1,9 +1,9 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Login_Process extends CI_Model{
+	class Login_Process extends CI_Model{							
 
-		public function f_select_password($user_id){
+		public function f_select_password($user_id){			//Retrieve the pwd against supplied user id
 			$this->db->select('password');
 			$this->db->where('user_id',$user_id);
 			$data=$this->db->get('mm_users');
@@ -18,7 +18,7 @@
 			}
 		}
 
-		public function f_insert_audit_trail($user_id){
+		/*public function f_insert_audit_trail($user_id){
 
 			$time = date("Y-m-d h:i:s");
 			$pcaddr = $_SERVER['REMOTE_ADDR'];
@@ -27,16 +27,16 @@
 				       'user_id' => $user_id,
 			      	       'terminal_name'=>$pcaddr);
 			$this->db->insert('td_audit_trail',$value);
-		}
+		}*/
 
-		public function f_get_user_inf($user_id){
+		public function f_get_user_inf($user_id){				//Retrieve user information
 			$this->db->select('*');
 			$this->db->where('user_id',$user_id);
 			$data=$this->db->get('mm_users');
 			return $data->row();
 		}
 	
-		public function f_get_kms_inf($sl_no){
+		public function f_get_kms_inf($sl_no){				//Retrieve KMS year information against sl.no.
 
 			$this->db->select('*');
 
@@ -49,7 +49,7 @@
 	}
 
 
-		public function f_get_kms_yr(){
+		public function f_get_kms_yr(){					//
 
 			$this->db->select('*');
 
@@ -57,13 +57,14 @@
 
 			return $data->result();
 		}
-		public function f_update_audit_trail($user_id){
+
+		/*public function f_update_audit_trail($user_id){
 			$time = date("Y-m-d h:i:s");
 			$sl_no= $this->session->userdata('sl_no')->sl_no;
 			$value= array('logout'=>$time);
 			$this->db->where('sl_no',$sl_no);
 			$this->db->update('td_audit_trail',$value);
-		}
+		}*/
 		
 		public function f_get_parameters($sl_no){
 			$this->db->select('param_value');
@@ -77,14 +78,11 @@
 			}
 		}
 		
-		public function f_audit_trail_value($user_id){
+		/*public function f_audit_trail_value($user_id){
     		$this->db->select_max('sl_no');
     		$this->db->where('user_id', $user_id);
     		$details = $this->db->get('td_audit_trail');
     		return $details->row();
-    	}
-
-		
-
+    	}*/
 	}	
 ?>

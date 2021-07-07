@@ -1,9 +1,9 @@
-
+<!-- View used for footer ---->
         </section>
 
         <footer class="sticky-footer" style="background-color: #a0a7ac; text-align: center;">
 
-           <span style="line-height: 5; font-size: 12px;"><strong>Copyright © Synergic Softek Solutions PVT. LTD. 2018</strong></span>
+           <span style="line-height: 5; font-size: 12px;"><strong>Powered by : <a href="https://synergicsoftek.in/" target="_blank">Synergic Softek Solutions Pvt.Ltd.</a></strong></span>
 
         </footer>
 
