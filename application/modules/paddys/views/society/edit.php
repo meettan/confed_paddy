@@ -25,6 +25,7 @@
                             name="name"
                             id="name"
                             value="<?php echo $society_dtls->soc_name; ?>"
+                            readonly
                         />
 
                     </div>
@@ -143,7 +144,7 @@
 
                     <div class="col-sm-4">
 
-                        <select name="block" id="block" class="form-control required">
+                        <select name="block" id="block" class="form-control required readonly">
 
                         </select>
 
@@ -286,7 +287,7 @@
                 
             </div>
 
-            <div class="col-md-5 container form-wraper" style="margin-left: 10px; width: 48%;">
+            <!--<div class="col-md-5 container form-wraper" style="margin-left: 10px; width: 48%;">
                         
                 <div class="form-header">
                     
@@ -341,7 +342,7 @@
 
                 </table>
 
-            </div>
+            </div>--->
 
         </form>
 
@@ -428,7 +429,7 @@ $(document).ready(function(){
 
             string  = '';
             //For Blocks
-            $.each(JSON.parse(data).mills, function( index, value ) {
+            /*$.each(JSON.parse(data).mills, function( index, value ) {
 
                 string += `<tr>
                             <td><input type="checkbox" class="form-check-input checkbox" name="status"></td>
@@ -439,7 +440,7 @@ $(document).ready(function(){
 
             });
 
-            $('tbody').html(string);
+            $('tbody').html(string);*/
 
         });
 
@@ -449,7 +450,7 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(document).ready(function(){
+   /* $(document).ready(function(){
 
         $('tbody').on('click', '.checkbox', function(){
             
@@ -495,5 +496,5 @@ $(document).ready(function(){
             }
 
         });
-    });
+    });*/
 </script> 

@@ -1,10 +1,17 @@
+ <!--  Dashboard for Connection of  Society Mill ------->
+
+<link rel = "stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script src= "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" ></script>
+<script src= "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js" ></script>
+<link rel = "stylesheet" href= "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+
 <div class="wraper">      
         
         <div class="row">
             
             <div class="col-lg-9 col-sm-12">
 
-                <h1><strong>Society Mill Combination</strong></h1>
+                <h1><strong>Society Mill Connection</strong></h1>
 
             </div>
 
@@ -13,26 +20,24 @@
         <div class="col-lg-12 container contant-wraper">
     
             <h3>
-                <a href="<?php echo site_url("paddy/society/mill");?>" class="btn btn-primary" style="width: 100px;">Add</a>
+                <a href="<?php echo site_url("paddy/socmill/add");?>" class="btn btn-primary" style="width: 100px;">Add</a>
                 <span class="confirm-div" style="float:right; color:green;"></span>
-                <div class="input-group" style="margin-left:75%;">
+                <!--<div class="input-group" style="margin-left:75%;">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input type="text" class="form-control" placeholder="Search..." id="search" style="z-index: 0;">
-                </div>
+                </div>-->
             </h3>
 
-            <table class="table table-bordered table-hover">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 
                 <thead>
 
                     <tr>
                     
                         <th>Sl No.</th>
-                        <th>Society Name</th>
-                        <th>Registration<br>No.</th>
-                        <th>Mill.</th>
-                        <th>Distrist</th>
-                        <th>Option</th>
+                        <th>District</th>
+                        <th>Society</th>
+                        <th>Edit</th>
 
                     </tr>
 
@@ -42,64 +47,36 @@
 
                     <?php 
                     
-                    if($society_dtls) {
+                    if($society_mill_dtls) {
 
                         $i = 0;
 
-                        foreach($society_dtls as $list) {
+                        foreach($society_mill_dtls as $list) {
 
-                            foreach($dist as $d_list) {
-
-                                if($d_list->district_code == $list->dist) {
-               
                     ?>
 
                             <tr>
 
                                 <td><?php echo ++$i; ?></td>
+
+                                <td><?php echo $list->district_name; ?></td>
+
                                 <td><?php echo $list->soc_name; ?></td>
-                                <td><?php echo $list->reg_no; ?></td>
-                                <td><?php $sql = "select mill_id from md_soc_mill where soc_id = '$list->sl_no'";
-                                    $data = $this->db->query($sql)->result();
-                                     
-                                    foreach($data as $row){
 
-                                            if( !empty($row->mill_id) ) {
-                                                echo get_mill_name($row->mill_id).',';
-                                            }
-
-                                        }
-
-                                //echo $list->ph_no; ?></td>
-                                <td><?php echo $d_list->district_name; ?></td>
-
-                               <td>
-                                    <a href="society_mill/edit?sl_no=<?php echo $list->sl_no; ?>" 
+                                <td>
+                                    <a href="socmill/edit?sl_no=<?php echo $list->soc_id; ?>" 
                                         data-toggle="tooltip"
                                         data-placement="bottom" 
                                         title="Edit">
 
                                         <i class="fa fa-edit fa-2x" style="color: #007bff"></i>
                                     </a>
-                                     <!-- <button 
-                                        type="button"
-                                        class="delete"
-                                        id="<?php //echo $list->sl_no.'/'.; ?>"
-                                        data-toggle="tooltip"
-                                        data-placement="bottom" 
-                                        title="Delete">
-                                        <i class="fa fa-trash-o fa-2x" style="color: #bd2130"></i>
-                                    </button> -->
-                                </td> 
+                                </td>
 
                             </tr>
 
                     <?php   
 
-                                }
-                             
-                            }    
-                            
                         }
 
                     }
@@ -118,11 +95,9 @@
                     <tr>
                     
                         <th>Sl No.</th>
-                        <th>Society Name</th>
-                        <th>Registration<br>No.</th>
-                        <th>Mill.</th>
-                        <th>Distrist</th>
-                        <th>Option</th>
+                        <th>District</th>
+                        <th>Society</th>
+                        <th>Edit</th>
 
                     </tr>
                 
@@ -170,5 +145,10 @@
 
     });
 
-    
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable();
+    });
 </script>

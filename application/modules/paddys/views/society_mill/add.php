@@ -1,15 +1,16 @@
-  
+ <!--  View for Connection of  New Society Mill ------->
+
     <div class="wraper">  
         
         <form method="POST" 
                 id="form"
-                action="<?php echo site_url("paddy/society/mill");?>" >
+                action="<?php echo site_url("paddy/socmill/add");?>" >
 
             <div class="col-md-6 container form-wraper" style="margin-left: 0px;">
 
                 <div class="form-header">
                 
-                    <h4>Society Details</h4>
+                    <h4>Society Mill Connection</h4>
                     
                 </div>
 
@@ -57,9 +58,6 @@
 
                     </div>
                 
-                
-               
-
                 </div>  
 
                 <div class="form-group row">
@@ -82,7 +80,7 @@
                         </div>
 
                 </div>
-    
+
         
                 <div class="form-group row">
 
@@ -112,8 +110,7 @@
 
                             <th><input type="checkbox" class="form-check-input" id="all-check"> All</th>
                             <th>Sl. No.</th>
-                            <th>Documents</th>
-
+                            <th>Mill</th>
                         </tr>
 
                     </thead>
@@ -128,7 +125,7 @@
                         
                             <th>All</th>
                             <th>Sl. No.</th>
-                            <th>Documents</th>
+                            <th>Mill</th>
 
                         </tr>
                     
@@ -151,11 +148,11 @@
 
 <script>
 
-    $(document).ready(function(){
+    $(document).ready(function(){                   //Populate Blocks in dropdown on section of district.
+                                                    //Only the blocks of selected district to be shown.
+        var i = 0;                                  //Also the mills of the selected district is displayed
 
-        var i = 0;
-
-        $('#dist').change(function(){
+        $('#dist').change(function(){                   
 
             $.get( 
 
@@ -180,13 +177,16 @@
                 $('#block').html(string);
 
                 string  = '';
-                //For Blocks
+                //For Mills
                 $.each(JSON.parse(data).mills, function( index, value ) {
 
                     string += `<tr>
                                 <td><input type="checkbox" class="form-check-input checkbox" name="status"></td>
+                                
                                 <td><input type="hidden" class="sl_no" name="sl_no[]" value='{"sl_no":"${value.sl_no}", "value":"0"}'>${index + 1}</td>
+                                
                                 <td>${value.mill_name}</td>
+
                                </tr> 
                               `;
 
@@ -203,7 +203,7 @@
 
 <script>
 
-    $(document).ready(function(){
+    $(document).ready(function(){           //On selction of block based on district & block society list is populated in dropdown list
 
         var i = 0;
 
@@ -240,9 +240,9 @@
 
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function(){                                          //Select Mill         
 
-        $('tbody').on('click', '.checkbox', function(){
+        $('tbody').on('click', '.checkbox', function(){ 
             
             let indexNo = $('.checkbox').index(this),
                 
@@ -259,7 +259,7 @@
 
         });
 
-        $('#all-check').click(function(){
+        $('#all-check').click(function(){                                   //Select & De-select by clicking All checkbox
 
             if($(this).prop("checked") == true){
 

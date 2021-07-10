@@ -276,7 +276,7 @@
 
             </div>
 
-            <div class="col-md-5 container form-wraper" style="margin-left: 10px; width: 48%;">
+            <!--<div class="col-md-5 container form-wraper" style="margin-left: 10px; width: 48%;">
                         
                 <div class="form-header">
                     
@@ -316,7 +316,7 @@
 
                 </table>
 
-            </div>
+            </div>--->
 
         </form>
 
@@ -361,7 +361,7 @@
 
                 string  = '';
                 //For Blocks
-                $.each(JSON.parse(data).mills, function( index, value ) {
+                /*$.each(JSON.parse(data).mills, function( index, value ) {
 
                     string += `<tr>
                                 <td><input type="checkbox" class="form-check-input checkbox" name="status"></td>
@@ -372,7 +372,7 @@
 
                 });
 
-                $('tbody').html(string);
+                $('tbody').html(string);*/
 
               });
 
@@ -382,7 +382,7 @@
 </script>
 
 <script>
-    $(document).ready(function(){
+    /*$(document).ready(function(){
 
         $('tbody').on('click', '.checkbox', function(){
             
@@ -428,5 +428,5 @@
             }
 
         });
-    });
+    });*/
 </script>

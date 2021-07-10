@@ -452,11 +452,11 @@ class Paddys extends MX_Controller {
 
             $this->Paddy->f_insert('md_society', $data_array);
 
-            $maxId = $this->Paddy->f_get_particulars("md_society", array('sl_no'), array('soc_name' => $this->input->post('name')), 1);
+            /*$maxId = $this->Paddy->f_get_particulars("md_society", array('sl_no'), array('soc_name' => $this->input->post('name')), 1);
             
             unset($data_array);
             
-            //Mills, which are included for this Society, adding in the table md_soc_mill
+             
             for($i = 0; $i < count($this->input->post('sl_no')); $i++){
                 
                 if(json_decode($this->input->post('sl_no')[$i])->value == 1){
@@ -477,7 +477,7 @@ class Paddys extends MX_Controller {
             }
 
             if(isset($data_array))
-                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);
+                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);*/
 
             //For notification storing message
             $this->session->set_flashdata('msg', 'Successfully added!');
@@ -555,11 +555,11 @@ class Paddys extends MX_Controller {
 
             $this->Paddy->f_edit('md_society', $data_array, $where);
 
-            //Deleting previous mills which are included for this society
-            $this->Paddy->f_delete('md_soc_mill', array("soc_id" => $this->input->post('soc_id')));
+             
+            /*$this->Paddy->f_delete('md_soc_mill', array("soc_id" => $this->input->post('soc_id')));
             unset($data_array);
             
-            //Mills, which are included for this Society, readding in the table md_soc_mill
+             
             for($i = 0; $i < count($this->input->post('sl_no')); $i++){
                 
                 if(json_decode($this->input->post('sl_no')[$i])->value == 1){
@@ -580,7 +580,7 @@ class Paddys extends MX_Controller {
             }
             
             if(isset($data_array))
-                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);
+                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);*/
             
             //For notification storing message
             $this->session->set_flashdata('msg', 'Successfully updated!');
@@ -606,7 +606,7 @@ class Paddys extends MX_Controller {
             //Society list of latest month
             $society['society_dtls']    =   $this->Paddy->f_get_particulars("md_society", NULL, $where, 1);
 
-            $society['mills']   = $this->Paddy->getMillDtls($this->input->get('sl_no'), $society['society_dtls']->dist);
+            //$society['mills']   = $this->Paddy->getMillDtls($this->input->get('sl_no'), $society['society_dtls']->dist);
 
             $this->load->view('post_login/main');
 
@@ -618,7 +618,8 @@ class Paddys extends MX_Controller {
 
     }
 
-    //District Wise Blocks And Mills for a particular district selected by user
+    //On selection of district in dropdown its block will be populated in block dropdown list
+    //Also the mill within the selected district will be send
     public function f_blocksandmills(){
 
         $data['blocks']   =   $this->Paddy->f_get_particulars("md_block", array("sl_no", "block_name"), array("dist" => $this->input->get('dist')), 0);
@@ -653,13 +654,255 @@ class Paddys extends MX_Controller {
         
     }
 
-    //Societies for a particular block selected by user
+    //Displays the list of societies based on a particular block
     public function f_societies() {
 
         $data   =   $this->Paddy->f_get_particulars("md_society", array("sl_no", "soc_name"), array( "block" => $this->input->get('block')), 0);
 
         echo json_encode($data);
 
+    }
+
+    /*****************************************************************************************************************************************
+     *                                          Section for Society Mill Connection                                                          *               
+     * ***************************************************************************************************************************************/    
+    public function f_societymill() {                                                //Dashboard
+
+        $select     =   array(  
+                                "a.soc_id",
+                                "b.soc_name",
+                                "a.dist",
+                                "d.district_name" 
+                            );
+
+        $where      =   array(
+                "a.soc_id   = b.sl_no"          => Null,
+                "a.dist     = d.district_code"  => Null,
+                "a.kms_year"  => $this->session->userdata('kms_yr')              //Fetch data according to logged in kms year
+
+        );
+
+        $society['society_mill_dtls']  =   $this->Paddy->f_get_distinct("md_soc_mill a,md_society b,md_district d",$select, $where, 0);
+
+        $this->load->view('post_login/main');
+
+        $this->load->view("society_mill/dashboard", $society);
+
+        $this->load->view('post_login/footer');
+        
+    }
+
+    public function f_socmill_add() {                                            //connect new society mill
+
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
+            
+            //Mills, which are included for this Society, adding in the table md_soc_mill
+            for($i = 0; $i < count($this->input->post('sl_no')); $i++){
+                
+                if(json_decode($this->input->post('sl_no')[$i])->value == 1){
+                    
+                    $data_array[] = array(
+                        
+                        "soc_id"            => $this->input->post('soc_name'),
+
+                        "mill_id"           => json_decode($this->input->post('sl_no')[$i])->sl_no,
+
+                        "dist"              => $this->input->post('dist'),
+
+                        "block"             => $this->input->post('block'),
+
+                        "kms_year"          => $this->session->userdata('kms_yr'),
+
+                        "created_by"        => $this->session->userdata('loggedin')->user_name,
+
+                        "created_dt"        => date('Y-m-d h:m:i')
+                    );
+                    
+                }
+                
+            }
+
+            if(isset($data_array))
+                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);
+
+            //For notification storing message
+            $this->session->set_flashdata('msg', 'Successfully added!');
+
+            redirect('paddy/societymill');
+
+        }
+
+        else {
+
+            //District List
+            $society['dist']    =   $this->Paddy->f_get_particulars("md_district", NULL, NULL, 0);
+
+            $this->load->view('post_login/main');
+
+            $this->load->view("society_mill/add",$society); 
+
+            $this->load->view('post_login/footer');
+
+        }
+
+    }
+
+
+    public function f_socmill_edit(){                                               //Edit Society Mill Connection                          
+
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
+            
+            /*$data_array = array (
+
+                "soc_name"      =>  $this->input->post('name'),
+
+                "reg_no"        =>  $this->input->post('reg_no'),
+
+                "reg_date"      =>  $this->input->post('reg_date'),
+
+                "soc_addr"      =>  $this->input->post('addr'),
+
+                "block"         =>  $this->input->post('block'),
+
+                "dist"          =>  $this->input->post('dist'),
+
+                "ph_no"         =>  $this->input->post('ph_no'),
+
+                "email"         =>  $this->input->post('email'),
+
+                "bank_name"     =>  $this->input->post('bnk_name'),
+
+                "branch_name"   =>  $this->input->post('brnch_name'),
+
+                "acc_type"      =>  $this->input->post('acc_type'),
+
+                "acc_no"        =>  $this->input->post('acc_no'),
+
+                "ifsc_code"     =>  $this->input->post('ifsc'),
+
+                "pan_no"        =>  $this->input->post('pan'),
+
+                "gst_no"        =>  $this->input->post('gst_no'),
+
+                "modified_by"    =>  $this->session->userdata('loggedin')->user_name,
+
+                "modified_dt"    =>  date('Y-m-d')
+
+            );
+
+            $where = array(
+
+                "sl_no"        =>  $this->input->post('soc_id')
+
+            );
+
+            $this->Paddy->f_edit('md_society', $data_array, $where);
+
+            //Deleting previous mills which are included for this society
+            $this->Paddy->f_delete('md_soc_mill', array("soc_id" => $this->input->post('soc_id')));
+            unset($data_array);
+            
+            //Mills, which are included for this Society, readding in the table md_soc_mill
+            for($i = 0; $i < count($this->input->post('sl_no')); $i++){
+                
+                if(json_decode($this->input->post('sl_no')[$i])->value == 1){
+                    
+                    $data_array[] = array(
+                        
+                        "soc_id"       => $this->input->post('soc_id'),
+
+                        "mill_id"      => json_decode($this->input->post('sl_no')[$i])->sl_no,
+
+                        "dist"         => $this->input->post('dist'),
+
+                        "block"        => $this->input->post('block')
+                    );
+                    
+                }
+                
+            }
+            
+            if(isset($data_array))
+                $this->Paddy->f_insert_multiple("md_soc_mill", $data_array);
+            
+             
+            $this->session->set_flashdata('msg', 'Successfully updated!');*/
+
+            redirect("paddy/societymill");
+
+        }
+
+        else {
+
+            $where = array(
+
+                "sl_no"    =>  $this->input->get('sl_no')
+
+            );
+
+            //District List
+            $society['dist']            =   $this->Paddy->f_get_particulars("md_district", NULL, NULL, 0);
+            
+            //Block List
+            $society['block']           =   $this->Paddy->f_get_particulars("md_block", NULL, NULL, 0);
+
+            //Society list of latest month
+            $society['society_dtls']    =   $this->Paddy->f_get_particulars("md_society", NULL, $where, 1);
+
+            $society['mills']           = $this->Paddy->getMillDtls($this->input->get('sl_no'), $society['society_dtls']->dist,$this->session->userdata('kms_yr'));
+
+            $society['socmill']         =   $this->Paddy->getSocMillDtls($this->input->get('sl_no'), $society['society_dtls']->dist,$this->session->userdata('kms_yr'));
+           
+            $this->load->view('post_login/main');
+
+            $this->load->view("society_mill/edit",$society);
+
+            $this->load->view('post_login/footer');
+
+        }
+
+    }
+
+    //Society Mill Delete
+    public function f_socmill_delete(){
+
+        $param = $this->input->get('sl_no');
+
+        $param = (explode("/",$param));
+
+        $where = array(
+            
+            "mill_id"   =>  $param[0],
+
+            "soc_id"    =>  $param[1],
+
+            "block"     =>  $param[2],
+
+            "kms_year"  =>  $param[3]
+            
+        );
+
+        //$row = $this->db->get_where('td_work_order', array('soc_id' => $this->input->get('sl_no')))->num_rows();
+
+        /*if($row > 0){
+
+            $this->session->set_flashdata('msg', 'Data cannot be delete!Already some quantity of Paddy Workorder in this Society.');
+            
+ 
+        }else{
+
+            $this->Paddy->f_delete('md_society', $where);
+            $this->session->set_flashdata('msg', 'Successfully deleted!');
+             
+        }*/
+
+        $this->Paddy->f_delete('md_soc_mill', $where);
+
+        $this->session->set_flashdata('msg', 'Successfully deleted!');
+
+
+        redirect("paddy/societymill");
+        
     }
 
 

@@ -693,16 +693,33 @@ $sql="SELECT t.dist, m.district_name, SUM(t.count) count
     }
 
     //Get Mill Details Which are included in particular society
-    public function getMillDtls($socId, $dist){
-        $sql = "SELECT m.sl_no, m.mill_name, ifnull(t.mill_id, 0) checkId
-                FROM md_mill m LEFT JOIN md_soc_mill t
-                ON m.dist = t.dist
-                AND m.sl_no = t.mill_id
-                AND t.soc_id = $socId
-                WHERE
-                m.dist = $dist";
+    public function getMillDtls($socId, $dist,$kms_year){
+        $sql = "SELECT m.sl_no, 
+                       m.mill_name,
+                       t.mill_id checkId,
+                       t.block,
+                       t.agreement_no agreement_no
+                FROM   md_mill m,md_soc_mill t
+                where  m.dist       = t.dist
+                AND    m.sl_no      = t.mill_id
+                AND    t.soc_id     = $socId
+                AND    t.dist       = $dist
+                AND    t.kms_year   = '$kms_year'";  
 
         return $this->db->query($sql)->result();        
+    }
+
+    public function getSocMillDtls($socId, $dist,$kms_year){
+        $sql = "SELECT Distinct dist,
+                                block as soc_mill_block,
+                                soc_id,
+                                agreement_no
+                FROM            md_soc_mill t
+                where  soc_id     = $socId
+                AND    dist       = $dist
+                AND    kms_year   = '$kms_year'";  
+
+        return $this->db->query($sql)->row();        
     }
 
     //Checking a particular Bill No for a particular pool type is present or not
