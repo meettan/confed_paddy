@@ -700,7 +700,7 @@
                 }
 
                 ////for auto calculate of tds and gst % 
-                if(sl=='10'||sl=='16'){
+                if(sl=='16'){
                   
                     var gst         = parseFloat(row.find('td:eq(2) .amounts ').val()*(2.5/100));
                     var tot         = parseFloat(row.find('td:eq(2) .amounts ').val());
@@ -720,6 +720,34 @@
                     var tot_butta  = $('.less_butta ').val();
                      $('.payble_amount').val((sumValuesOf('paybel')- $('.less_butta ').val()).toFixed(0));
                      $('.tot_payble').val(sumValuesOf('paybel').toFixed(0));
+                }else if(sl=='10'){
+                  
+                  var gst         = parseFloat(row.find('td:eq(2) .amounts ').val()*(2.5/100));
+                  var tds         = parseFloat(row.find('td:eq(2) .amounts ').val()*(2/100));
+                  var tot         = parseFloat(row.find('td:eq(2) .amounts ').val());
+                  tot = tot - tds;
+                  var gr_tot      = (parseFloat(tot) + (parseFloat(gst)+parseFloat(gst))).toFixed();
+
+                  /*console.log('tot ' + tot);
+                  console.log('gst ' + gst);
+                  console.log('tds '+ tds);
+                  console.log('gr_tot '+ gr_tot);*/
+                  
+                  row.find('td:eq(3)  input').val(tds.toFixed(0));
+                  row.find('td:eq(4)  input').val(gst.toFixed(0));
+                  row.find('td:eq(5)  input').val(gst.toFixed(0));
+                  
+                  row.find('td:eq(6)  input').val(gr_tot);
+                  $('.payble_amount').val(sumValuesOf('tot_payble').toFixed(0));
+                  $('.tottotal').val(sumValuesOf('amounts').toFixed(0));
+                  $('.tottds').val(sumValuesOf('tds_amount').toFixed(0));
+                  $('.totcgst').val(sumValuesOf('cgst').toFixed(0));
+                  $('.totsgst').val(sumValuesOf('sgst').toFixed(0));
+                  $('.less_butta').val(sumValuesOf('qty_butta').toFixed(0));
+                  var tot_butta  = $('.less_butta ').val();
+                   $('.payble_amount').val((sumValuesOf('paybel')- $('.less_butta ').val()).toFixed(0));
+                   $('.tot_payble').val(sumValuesOf('paybel').toFixed(0));
+
                 } else if (sl=='3'||sl=='4'||sl=='5'||sl=='6'||sl=='7'||sl=='15'){
                   
                     var tds         = parseFloat(row.find('td:eq(2) .amounts ').val()*(2/100));
@@ -741,6 +769,7 @@
                      $('.payble_amount').val((sumValuesOf('paybel')- $('.less_butta ').val()).toFixed(0));
                      $('.tot_payble').val(sumValuesOf('paybel').toFixed(0));
                  } else{
+
                     var gst         = parseFloat(row.find('td:eq(2) .amounts ').val()*(2.5/100));
                     var tot         = parseFloat(row.find('td:eq(2) .amounts ').val());
                     var gr_tot      = parseFloat(tot ).toFixed();
@@ -751,7 +780,7 @@
                     //row.find('td:eq(6)  input').val(gr_tot.toFixed());
                     row.find('td:eq(6)  input').val(gr_tot);
                     $('.payble_amount').val(sumValuesOf('tot_payble').toFixed(0));
-                   $('.tottotal').val(sumValuesOf('amounts').toFixed(0));
+                    $('.tottotal').val(sumValuesOf('amounts').toFixed(0));
                     $('.tottds').val(sumValuesOf('tds_amount').toFixed(0));
                     $('.totcgst').val(sumValuesOf('cgst').toFixed(0));
                     $('.totsgst').val(sumValuesOf('sgst').toFixed(0));

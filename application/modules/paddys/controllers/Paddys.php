@@ -554,7 +554,6 @@ class Paddys extends MX_Controller {
             );
 
             $this->Paddy->f_edit('md_society', $data_array, $where);
-
              
             /*$this->Paddy->f_delete('md_soc_mill', array("soc_id" => $this->input->post('soc_id')));
             unset($data_array);
